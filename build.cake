@@ -6,7 +6,7 @@ var target = Argument("target", "Default");
 Task("test")
     .Does(() => {
             DotNetBuild("TryMonad.sln");
-            Fixie("TryMonad/bin/Debug/TryMonad.dll");
+            Fixie("TryMonad.Tests/bin/Debug/TryMonad.Tests.dll");
     });
 
 Task("watch")

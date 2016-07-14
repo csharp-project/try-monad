@@ -2,42 +2,39 @@
 namespace TryMonad {
 	public static class Extensions {
 
-		public static Try<V> SelectMany<T, U, V>(
-			this Try<T> self, Func<T, Try<U>> select, Func<T, U, V> bind) {
+		public static Try<TResult> SelectMany<TSource, TCollection, TResult>(
+			this Try<TSource> self,  Func<TSource, Try<TCollection>> collectionSelector, Func<TSource, TCollection, TResult> resultSelector) {
 
-			if (select == null) throw new ArgumentNullException(nameof(select));
-			if (bind == null) throw new ArgumentNullException(nameof(bind));
+			if (collectionSelector == null) throw new ArgumentNullException(nameof(collectionSelector));
+			if (resultSelector == null) throw new ArgumentNullException(nameof(resultSelector));
 
-			return new Try<V>(() => {
-				// T
-				TryResult<T> restT;
+			return new Try<TResult>(() => {
+				TryResult<TSource> source;
 				try {
-					restT = self();
-					if (restT.IsFaulted)
-						return new TryResult<V>(restT.Exception);
+					source = self();
+					if (source.IsFaulted)
+						return new TryResult<TResult>(source.Exception);
 				} catch (Exception ex) {
-					return new TryResult<V>(ex);
+					return new TryResult<TResult>(ex);
 				}
 
-				// U
-				TryResult<U> restU;
+				TryResult<TCollection> collection;
 				try {
-					restU = select(restT.Value)();
-					if (restU.IsFaulted)
-						return new TryResult<V>(restU.Exception);
+					collection = collectionSelector(source.Value)();
+					if (collection.IsFaulted)
+						return new TryResult<TResult>(collection.Exception);
 				} catch (Exception ex) {
-					return new TryResult<V>(ex);
+					return new TryResult<TResult>(ex);
 				}
 
-				// V
-				V restV;
+				TResult result;
 				try {
-					restV = bind(restT.Value, restU.Value);
+					result = resultSelector(source.Value, collection.Value);
 				} catch (Exception ex) {
-					return new TryResult<V>(ex);
+					return new TryResult<TResult>(ex);
 				}
 
-				return new TryResult<V>(restV);
+				return new TryResult<TResult>(result);
 			});
 		}
 	}
