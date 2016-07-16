@@ -69,6 +69,21 @@ namespace TryMonad.Tests {
 			var products = shops.SelectMany(x => x.Products, (s, p) => s.Name + ":" + p.ProductName);
 			products.Count().Should().Be(6);
 		}
+
+		public void CartesianProduct() {
+			var a = new[] { 1, 4, 7 };
+			var b = new[] { 2, 5, 8 };
+
+			var result =
+				from aa in a
+				from bb in b
+				select aa + bb;
+
+			result.Count().Should().Be(9);
+
+			var lampda = a.SelectMany(aa => b, (aa, bb) => new { aa, bb });
+			lampda.Count().Should().Be(9);
+		}
 	}
 }
 

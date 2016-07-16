@@ -43,12 +43,19 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spec\LinqTests.cs" />
+    <Compile Include="Spec\TryMonadTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Spec\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TryMonad\TryMonad.csproj">
+      <Project>{65D43AD7-1218-4CB5-8782-CC8923EA8808}</Project>
+      <Name>TryMonad</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
