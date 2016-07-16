@@ -61,6 +61,19 @@ namespace TryMonad.Tests {
 			var rs = query();
 			rs.Value.Should().Be(0 + 1 * 4);
 		}
+
+		public void LambdaChain() {
+			Func<int, Try<int>> addOne = (x) => () => x + 1;
+
+			var a = addOne(0);
+			var query =
+				a.SelectMany(b => addOne(b), (x, y) => y)
+				 .SelectMany(c => addOne(c), (x, y) => y)
+				 .SelectMany(d => addOne(d), (x, y) => y);
+			var result = query();
+			result.Value.Should().Be(0 + 1 * 4);
+				
+		}
 	}
 }
 
