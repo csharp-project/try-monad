@@ -15,14 +15,6 @@ namespace TryAgain {
     }
 
     public static class Extensions {
-
-        /*
-                public static Try<TResult> SelectMany<TSource, TCollection, TResult>(
-                    this Try<TSource> self,
-                    Func<TSource, Try<TCollection>> collectionSelector,
-                    Func<TSource, TCollection, TResult> resultSelector) {
-        */
-
         public static Try<TResult> SelectMany<TSource, TCollection, TResult>(
                 this Try<TSource> self,
                 Func<TSource, Try<TCollection>> collectionSelector,
@@ -46,20 +38,20 @@ namespace TryAgain {
     public class TryAgainTest {
         [Fact]
         public void TryTest() {
-            Func<string, Try<int>> parseInt = (x) => () => Int32.Parse(x);
+
+            Func<string, Try<int>> parseInt = (x) => () => {
+                Console.WriteLine("~ Parse {0}", x);
+                return Int32.Parse(x);
+            };
 
             var query =
                 from a in parseInt("100")
-                from b in parseInt("200")
+                from b in parseInt("A00")
                 select a + b;
 
             var rs = query();
 
-            if (rs.Success) {
-                Assert.Equal(300, rs.Value);
-            } else {
-                Console.WriteLine(rs.Error);
-            }
+            Console.WriteLine("~ Success {0}", rs.Success);
         }
     }
 }
