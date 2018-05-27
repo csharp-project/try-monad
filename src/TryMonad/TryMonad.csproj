@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.Net.Sdk">
+  <PropertyGroup>
+    <PackageId>wk.TryMonad</PackageId>
+    <Version>0.1.0</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+</Project>
