@@ -21,4 +21,3 @@ namespace TryMonad {
         public static implicit operator TryResult<T>(T value) => new TryResult<T>(value);
     }
 }
-

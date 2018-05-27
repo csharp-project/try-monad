@@ -18,7 +18,6 @@ namespace TryMonad.Tests {
     }
 
     public class LinqTests {
-        [Fact]
         private IEnumerable<Shop> CreateShops() {
             var shop = new Shop {
                 Name = "Shop A",
@@ -44,34 +43,40 @@ namespace TryMonad.Tests {
         }
 
         private IEnumerable<TResult> SelectMany<TSource, TCollection, TResult>(
-            IEnumerable<TSource> source, Func<TSource, IEnumerable<TCollection>> collectionSelector, Func<TSource, TCollection, TResult> resultSelector) {
-            foreach (var s in source) {
-                foreach (var collection in collectionSelector(s)) {
-                    yield return resultSelector(s, collection);
+            IEnumerable<TSource> source,
+            Func<TSource, IEnumerable<TCollection>> collectionSelector,
+            Func<TSource, TCollection, TResult> resultSelector) {
+            foreach (var item in source) {
+                foreach (var collection in collectionSelector(item)) {
+                    yield return resultSelector(item, collection);
                 }
             }
         }
 
-        public void LoopFlat() {
+        [Fact]
+        public void LoopFlatTest() {
             var shops = CreateShops();
             var products = GetProducts(shops);
             products.Count().Should().Be(6);
         }
 
-        public void SelectMany() {
+        [Fact]
+        public void SelectManyTest() {
             var shops = CreateShops();
             var result = SelectMany<Shop, Product, String>(shops, x => x.Products, (x, y) => x.Name + y.ProductName);
             result.Count().Should().Be(6);
         }
 
-        public void FlatProducts() {
+        [Fact]
+        public void FlatProductsTest() {
             var shops = CreateShops();
 
             var products = shops.SelectMany(x => x.Products, (s, p) => s.Name + ":" + p.ProductName);
             products.Count().Should().Be(6);
         }
 
-        public void CartesianProduct() {
+        [Fact]
+        public void CartesianProductTest() {
             var a = new[] { 1, 4, 7 };
             var b = new[] { 2, 5, 8 };
 
