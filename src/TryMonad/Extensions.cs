@@ -31,14 +31,11 @@ namespace TryMonad {
                     return new TryResult<TResult>(ex);
                 }
 
-                TResult result;
                 try {
-                    result = resultSelector(source.Value, collection.Value);
+                    return resultSelector(source.Value, collection.Value);
                 } catch (Exception ex) {
                     return new TryResult<TResult>(ex);
                 }
-
-                return new TryResult<TResult>(result);
             });
         }
     }
