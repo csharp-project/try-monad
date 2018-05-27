@@ -1,15 +1,18 @@
 ## Try Monad
 
 ```csharp
-Func<int, Try<int>> addOne = (x) => () => x + 1;
+using TryMonad;
+
+Func<string, Try<int>> parseInt = (x) => () => Int32.Parse(x);
 
 var query =
-    from a in addOne(0)
-    from b in addOne(a)
-    from c in addOne(b)
-    from d in addOne(c)
-    select d;
+    from a in parseInt("100")
+    from b in parseInt("200")
+    select a + b;
 
 var result = query();
-result.Value.Should().Be(0 + 1 * 4);
+
+if (!result.IsFaulted) {
+    Console.WriteLine(result.Value);
+}
 ```
