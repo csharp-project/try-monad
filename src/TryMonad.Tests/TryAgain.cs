@@ -1,7 +1,8 @@
 using System;
 using Xunit;
 
-namespace TryAgain {
+namespace XXX {
+
     public delegate TryResult<T> Try<T>();
 
     public class TryResult<T> {

@@ -14,7 +14,7 @@ namespace TryMonad {
                 TryResult<TSource> source;
                 try {
                     source = self();
-                    if (source.IsFaulted) {
+                    if (source.Success) {
                         return new TryResult<TResult>(source.Exception);
                     }
                 } catch (Exception ex) {
@@ -24,7 +24,7 @@ namespace TryMonad {
                 TryResult<TCollection> collection;
                 try {
                     collection = collectionSelector(source.Value)();
-                    if (collection.IsFaulted) {
+                    if (collection.Success) {
                         return new TryResult<TResult>(collection.Exception);
                     }
                 } catch (Exception ex) {

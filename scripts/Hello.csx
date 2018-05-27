@@ -12,6 +12,6 @@ var query =
 
 var result = query();
 
-if (!result.IsFaulted) {
+if (result.Success) {
     Console.WriteLine(result.Value);
 }

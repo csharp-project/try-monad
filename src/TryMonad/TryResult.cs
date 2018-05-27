@@ -7,17 +7,10 @@ namespace TryMonad {
         public readonly T Value;
         public readonly Exception Exception;
 
-        public TryResult(T value) {
-            Value = value;
-            Exception = null;
-        }
+        public TryResult(T value) => (Value, Exception) = (value, null);
+        public TryResult(Exception ex) => (Value, Exception) = (default(T), ex);
 
-        public TryResult(Exception ex) {
-            Value = default(T);
-            Exception = ex;
-        }
-
-        public bool IsFaulted => Exception != null;
+        public bool Success => Exception != null;
         public static implicit operator TryResult<T>(T value) => new TryResult<T>(value);
     }
 }
